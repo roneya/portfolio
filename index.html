@@ -12,14 +12,14 @@
 </head>
 </head>
 
-<body>
+<body class="has-background-dark has-background-grey-darker">
 
-    <nav class="navbar is-link">
+    <!-- <nav class="navbar has-background-dark has-background-black-ter" >
         <div class="navbar-brand">
-            <a class="navbar-item is-size-4 has-text-weight-bold" href="#">
+            <a class="navbar-item is-size-4 has-text-weight-bold has-text-white">
                 Rohan Vidhate
             </a>
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+            <a role="button" class="navbar-burger burger has-text-white" aria-label="menu" aria-expanded="false"
                 data-target="navbarBasicExample">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
@@ -28,31 +28,62 @@
         </div>
 
         <div id="navbarBasicExample" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item" href="#">
-                    About
+      
+            <div class="navbar-end pr-6 is-centered is-vcentered">
+                <a class="navbar-item mr-4 has-text-white" onmouseover="this.style.backgroundColor='grey'" onmouseout="this.style.backgroundColor='transparent'" href="#">
+                  About
                 </a>
-
-                <a class="navbar-item" href="#">
-                    Skills
+                <a class="navbar-item mr-4 has-text-white " onmouseover="this.style.backgroundColor='grey'" onmouseout="this.style.backgroundColor='transparent'" href="#">
+                  Skills
                 </a>
-                <a class="navbar-item" href="#">
-                    Projects
+                <a class="navbar-item mr-4 has-text-white" onmouseover="this.style.backgroundColor='grey'" onmouseout="this.style.backgroundColor='transparent'" href="#">
+                  Projects
                 </a>
-
-
-
-            </div>
-
+              </div>
+              
 
 
         </div>
-    </nav>
+        
+
+    </nav> -->
 
 
 
+    <nav class="navbar has-background-dark has-background-black-ter">
+        <div class="navbar-brand">
+          <a class="navbar-item is-size-4 has-text-weight-bold has-text-white">
+            Rohan Vidhate
+          </a>
+          <a role="button" class="navbar-burger burger has-text-white" aria-label="menu" aria-expanded="false"
+            data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+      
+        <div id="navbarBasicExample" class="navbar-menu has-background-dark-mobile">
+          <div class="navbar-end pr-6 is-centered is-vcentered">
+            <a class="navbar-item mr-4 has-text-white" onmouseover="this.style.backgroundColor='grey'" onmouseout="this.style.backgroundColor='transparent'" href="#">
+              About
+            </a>
+            <a class="navbar-item mr-4 has-text-white " onmouseover="this.style.backgroundColor='grey'" onmouseout="this.style.backgroundColor='transparent'" href="#">
+              Skills
+            </a>
+            <a class="navbar-item mr-4 has-text-white" onmouseover="this.style.backgroundColor='grey'" onmouseout="this.style.backgroundColor='transparent'" href="#">
+              Projects
+            </a>
+          </div>
+        </div>
+      </nav>
+      
 
 
+<style>.has-background-dark-mobile {
+    background-color: #232323; /* Change this to the color you want */
+  }
+  </style>
 
 
 
@@ -80,9 +111,9 @@
 
             <div class="columns is-vcentered is-multiline is-centered">
                 <div class="column"></div>
-                <div class="column is-5-desktop is-5-tablet is-full-mobile ">
-                    <h1 class="title is-1">Welcome to my website!</h1>
-                    <p class="subtitle is-4">My name is Rohan Vidhate and I am a computer engineer who loves to play
+                <div class=" column is-5-desktop is-5-tablet is-full-mobile ">
+                    <h1 class=" has-text-white title is-1">Welcome to my website!</h1>
+                    <p class="has-text-white subtitle is-4">My name is Rohan Vidhate and I am a computer engineer who loves to play
                         chess and sketching. This website is a collection of my projects and experiences.</p>
                 </div>
                 <div class="column"></div>
@@ -97,13 +128,13 @@
                             <div class="media">
                                 <div class="media-content">
                                     <p class="title is-4">John Doe</p>
-                                    <p class="subtitle is-6">@johndoe</p>
+
                                 </div>
                             </div>
                             <div class="content">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
                                 <br>
-                                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                                
                             </div>
                             <div class="buttons is-centered">
                                 <a class="button" href="#">
@@ -239,10 +270,10 @@
             <div class="columns is-centered">
                 <div class="column"></div>
                 <div class="column is-8">
-                    <h1 class="title has-text-centered">
+                    <h1 class=" has-text-white title has-text-centered">
                         My Projects...
                     </h1>
-                    <p class="subtitle has-text-centered">
+                    <p class=" has-text-white subtitle has-text-centered">
                         My name is Rohan Vidhate and I am a computer engineer who loves to play chess and sketching.
                         This website is a collection of my projects and experiences.
                     </p>
@@ -333,70 +364,6 @@
 
         </div>
     </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- 
-
-
-    <div class="container">
-        <div class="columns is-multiline">
-            <div class="column"></div>
-            
-            <div class="column is-two-fifths">
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-4by3">
-                            <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-                        </figure>
-                    </div>
-                    <div class="card-content">
-                        <div class="content">
-                            <h2 class="title is-4">Project 1</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Phasellus nec iaculis mauris.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="column"></div>
-            <div class="column is-two-fifths">
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-4by3">
-                            <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-                        </figure>
-                    </div>
-                    <div class="card-content">
-                        <div class="content">
-                            <h2 class="title is-4">Project 2</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Phasellus nec iaculis mauris.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-<div class="column"></div>
-        </div>
-    </div>
- -->
-
-
-
 
 
 
