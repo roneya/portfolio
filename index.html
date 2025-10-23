@@ -4,102 +4,87 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Rohan Vidhate | Portfolio</title>
+
   <link rel="shortcut icon" href="./asset/ic.png" type="image/x-icon" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
   <style>
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: white;
+      color: #fff;
       overflow-x: hidden;
     }
-    .social-links .button {
-  border-radius: 10px !important;
-  width: 45px;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  transition: all 0.3s ease;
-}
-
-.social-links .button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 0 10px rgba(0, 209, 178, 0.7);
-}
-
-.icon-img {
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  object-fit: cover;
-}
 
     /* Navbar */
     .navbar { background-color: #111 !important; }
     .navbar-item:hover { background-color: #333 !important; border-radius: 6px; }
 
-    /* Fade-in animation */
-    .fade-in { opacity: 0; transform: translateY(20px); animation: fadeIn 0.8s ease forwards; }
+    /* Generic fade-in */
+    .fade-in { opacity: 0; transform: translateY(20px); animation: fadeIn .8s ease forwards; }
     @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
 
-    /* About Section */
-    #about .subtitle {
-      max-width: 700px;
-      margin: 0 auto;
-      line-height: 1.7;
+    /* Social buttons — squared */
+    .social-links .button {
+      border-radius: 10px !important;
+      width: 45px; height: 45px;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0; transition: all .3s ease;
     }
-    #about .button {
-      transition: all 0.3s ease;
-      border-radius: 50%;
-    }
-    #about .button:hover {
-      box-shadow: 0 0 10px rgba(0, 209, 178, 0.7);
+    .social-links .button:hover {
       transform: translateY(-3px);
+      box-shadow: 0 0 10px rgba(0, 209, 178, 0.7);
+    }
+    .icon-img {
+      width: 26px; height: 26px; border-radius: 6px; object-fit: cover;
     }
 
-    /* Skills */
+    /* About */
+    #about .subtitle { max-width: 700px; margin: 0 auto; line-height: 1.7; }
+    #about .button { /* remove the circular override to keep squares */ border-radius: 10px; }
+
+    /* Skills (compact) */
     .skills-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      justify-items: center;
+      gap: 1rem; justify-items: center;
     }
     .skill-card {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      padding: 1rem;
-      text-align: center;
-      width: 200px;
-      transition: transform 0.2s ease, background 0.3s;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px; padding: 1rem; text-align: center;
+      width: 200px; transition: transform .2s ease, background .3s;
     }
-    .skill-card:hover {
-      transform: scale(1.05);
-      background: rgba(255, 255, 255, 0.2);
-    }
+    .skill-card:hover { transform: scale(1.05); background: rgba(255,255,255,0.2); }
 
-    /* Project Cards */
-    .card {
-      transition: transform 0.3s, box-shadow 0.3s;
-      border-radius: 10px;
-      overflow: hidden;
+    /* Projects */
+    .project-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 10px; overflow: hidden;
+      transition: transform .3s, box-shadow .3s, background .3s;
+      height: 100%;
     }
-    .card:hover {
+    .project-card:hover {
       transform: translateY(-6px);
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 15px rgba(0, 209, 178, 0.35);
+      background: rgba(255,255,255,0.08);
     }
-    .card-content { background-color: #1e293b; color: #fff; }
+    .project-card .card-image .image { overflow: hidden; }
+    .project-card .card-image img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transform: scale(1); transition: transform .35s ease;
+    }
+    .project-card:hover .card-image img { transform: scale(1.04); }
+    .project-card .card-content {
+      background: transparent; color: #ddd; padding: 1.2rem;
+    }
+    .project-card .title.is-5 { color: #ffffff !important; margin-bottom: .5rem; }
+    .project-card p { font-size: .95rem; line-height: 1.6; }
 
     /* Footer */
-    footer {
-      background-color: #0b0b0b;
-      color: #aaa;
-    }
+    footer { background-color: #0b0b0b; color: #aaa; }
     footer a { color: #fff; }
-
   </style>
 </head>
 
@@ -109,7 +94,7 @@
   <nav class="navbar">
     <div class="navbar-brand">
       <a class="navbar-item has-text-weight-bold has-text-white is-size-4">Rohan Vidhate</a>
-      <a role="button" class="navbar-burger" data-target="navbarMenu">
+      <a role="button" class="navbar-burger" data-target="navbarMenu" aria-label="menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </a>
     </div>
@@ -128,9 +113,8 @@
     <div class="container has-text-centered">
       <h1 class="title has-text-white is-2">Welcome to My Portfolio</h1>
       <p class="has-text-grey-light mb-4">Code. Create. Conquer.</p>
-      <hr style="width: 80px; margin: auto; border: 1px solid #00d1b2; border-radius: 10px; opacity: 0.8;">
+      <hr style="width:80px;margin:auto;border:1px solid #00d1b2;border-radius:10px;opacity:.8;">
       <br>
-
       <p class="subtitle has-text-grey-light is-5">
         I'm <strong class="has-text-white">Rohan Vidhate</strong>, a Computer Engineer who blends logic and creativity —
         crafting backend systems by day and sketching ideas by night. With a passion for
@@ -139,22 +123,22 @@
       </p>
 
       <div class="buttons is-centered mt-5 social-links">
-  <a class="button is-light" href="http://instagram.com/prof.rv" target="_blank" title="Instagram">
-    <i class="fab fa-instagram fa-lg"></i>
-  </a>
-  <a class="button is-light" href="https://leetcode.com/iamrohanvidhate/" target="_blank" title="LeetCode">
-    <img src="https://i.pinimg.com/736x/da/4e/ee/da4eeefff094e1f73badf66a8ba099e3.jpg" alt="LeetCode" class="icon-img">
-  </a>
-  <a class="button is-light" href="https://www.linkedin.com/in/iamrohanvidhate/" target="_blank" title="LinkedIn">
-    <i class="fab fa-linkedin fa-lg"></i>
-  </a>
-  <a class="button is-light" href="https://github.com/roneya" target="_blank" title="GitHub">
-    <i class="fab fa-github fa-lg"></i>
-  </a>
-  <a class="button is-light" href="https://www.kaggle.com/rohanvidhate" target="_blank" title="Kaggle">
-    <img src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/189_Kaggle_logo_logos-1024.png" alt="Kaggle" class="icon-img">
-  </a>
-</div>
+        <a class="button is-light" href="http://instagram.com/prof.rv" target="_blank" title="Instagram">
+          <i class="fab fa-instagram fa-lg"></i>
+        </a>
+        <a class="button is-light" href="https://leetcode.com/iamrohanvidhate/" target="_blank" title="LeetCode">
+          <img src="https://i.pinimg.com/736x/da/4e/ee/da4eeefff094e1f73badf66a8ba099e3.jpg" alt="LeetCode" class="icon-img">
+        </a>
+        <a class="button is-light" href="https://www.linkedin.com/in/iamrohanvidhate/" target="_blank" title="LinkedIn">
+          <i class="fab fa-linkedin fa-lg"></i>
+        </a>
+        <a class="button is-light" href="https://github.com/roneya" target="_blank" title="GitHub">
+          <i class="fab fa-github fa-lg"></i>
+        </a>
+        <a class="button is-light" href="https://www.kaggle.com/rohanvidhate" target="_blank" title="Kaggle">
+          <img src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/189_Kaggle_logo_logos-1024.png" alt="Kaggle" class="icon-img">
+        </a>
+      </div>
     </div>
   </section>
 
@@ -162,25 +146,34 @@
   <section id="projects" class="section fade-in">
     <div class="container">
       <h1 class="title has-text-centered has-text-white">Projects</h1>
-      <hr>
+      <hr style="width:90px;margin:1rem auto;border:1px solid #00d1b2;opacity:.8;border-radius:5px;">
 
       <div class="columns is-multiline is-centered">
+
         <div class="column is-two-fifths">
-          <div class="card">
-            <a href="https://roneya.github.io/Car-Accident-Predictor" target="_blank">
-              <div class="card-image"><img src="asset/car.png" alt=""></div>
+          <div class="card project-card">
+            <a href="https://roneya.github.io/Car-Accident-Predictor" target="_blank" rel="noopener">
+              <div class="card-image">
+                <figure class="image is-3by2">
+                  <img src="asset/car.png" alt="Car Accident Predictor">
+                </figure>
+              </div>
               <div class="card-content">
                 <h2 class="title is-5">Kaggle Oct-25 Competition</h2>
-                <p>CatBoostRegressor Model predicting vehicle accident chances.</p>
+                <p>CatBoostRegressor model predicting vehicle accident chances.</p>
               </div>
             </a>
           </div>
         </div>
 
         <div class="column is-two-fifths">
-          <div class="card">
-            <a href="https://github.com/roneya/Stock_Market" target="_blank">
-              <div class="card-image"><img src="asset/drive.png" alt=""></div>
+          <div class="card project-card">
+            <a href="https://github.com/roneya/Stock_Market" target="_blank" rel="noopener">
+              <div class="card-image">
+                <figure class="image is-3by2">
+                  <img src="asset/drive.png" alt="Google Drive Bucket App">
+                </figure>
+              </div>
               <div class="card-content">
                 <h2 class="title is-5">Google Drive as Bucket App</h2>
                 <p>Client-side secure upload system mimicking AWS S3.</p>
@@ -190,9 +183,13 @@
         </div>
 
         <div class="column is-two-fifths">
-          <div class="card">
-            <a href="https://github.com/roneya/library_management" target="_blank">
-              <div class="card-image"><img src="asset/loan.png" alt=""></div>
+          <div class="card project-card">
+            <a href="https://github.com/roneya/library_management" target="_blank" rel="noopener">
+              <div class="card-image">
+                <figure class="image is-3by2">
+                  <img src="asset/loan.png" alt="Loan Status Prediction">
+                </figure>
+              </div>
               <div class="card-content">
                 <h2 class="title is-5">Loan Status Prediction</h2>
                 <p>LightGBM model with EDA for loan classification.</p>
@@ -202,9 +199,13 @@
         </div>
 
         <div class="column is-two-fifths">
-          <div class="card">
-            <a href="https://roneya.github.io/Guess-the-Country" target="_blank">
-              <div class="card-image"><img src="asset/country.png" alt=""></div>
+          <div class="card project-card">
+            <a href="https://roneya.github.io/Guess-the-Country" target="_blank" rel="noopener">
+              <div class="card-image">
+                <figure class="image is-3by2">
+                  <img src="asset/country.png" alt="Guess the Country Game">
+                </figure>
+              </div>
               <div class="card-content">
                 <h2 class="title is-5">Guess the Country Game</h2>
                 <p>A fun browser game to warm up your brain before coding!</p>
@@ -212,22 +213,23 @@
             </a>
           </div>
         </div>
+
       </div>
     </div>
   </section>
 
-    <!-- Skills -->
+  <!-- Skills -->
   <section id="skills" class="section fade-in">
     <div class="container has-text-centered">
       <h1 class="title has-text-white">Skills</h1>
       <div class="skills-grid mt-5">
         <div class="skill-card">
           <h3 class="has-text-primary">Java (Spring Boot)</h3>
-          <p>Strong backend experience, REST APIs & Hibernate expertise.</p>
+          <p>Strong backend experience, REST APIs & Hibernate.</p>
         </div>
         <div class="skill-card">
           <h3 class="has-text-info">Python</h3>
-          <p>Django web framework & data analysis experience.</p>
+          <p>Django framework & data analysis.</p>
         </div>
         <div class="skill-card">
           <h3 class="has-text-danger">JavaScript</h3>
@@ -235,7 +237,7 @@
         </div>
         <div class="skill-card">
           <h3 class="has-text-success">VueJS</h3>
-          <p>Routing, lifecycle hooks & Vuetify components.</p>
+          <p>Routing, lifecycle hooks & Vuetify.</p>
         </div>
         <div class="skill-card">
           <h3 class="has-text-warning">Bulma & Bootstrap</h3>
@@ -243,7 +245,7 @@
         </div>
         <div class="skill-card">
           <h3 class="has-text-primary">Figma</h3>
-          <p>30+ UI/UX pages designed with user focus.</p>
+          <p>30+ UI/UX pages designed.</p>
         </div>
       </div>
     </div>
