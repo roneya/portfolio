@@ -9,15 +9,16 @@
   <link rel="icon" href="./asset/ic.png" type="image/x-icon" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
     :root {
-      --bg: #070b16;
-      --bg-soft: #0c1222;
+      --bg: #060912;
+      --bg-soft: #0b1120;
       --teal: #00e0c0;
       --teal-2: #19b8ff;
+      --violet: #a472ff;
       --teal-dim: rgba(0,224,192,0.12);
       --teal-glow: rgba(0,224,192,0.30);
       --card-bg: rgba(255,255,255,0.035);
@@ -41,25 +42,28 @@
     a { text-decoration: none; color: inherit; }
     ::selection { background: var(--teal); color: #051014; }
 
+    /* ── Custom cursor glow ── */
+    #cursor-glow {
+      position: fixed; top: 0; left: 0; width: 460px; height: 460px;
+      border-radius: 50%; pointer-events: none; z-index: 0;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(0,224,192,0.10) 0%, rgba(25,184,255,0.05) 35%, transparent 70%);
+      transition: opacity .4s ease; opacity: 0;
+    }
+
     /* ── Ambient background ── */
-    .bg-orbs { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
-    .orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .35; }
-    .orb.a { width: 480px; height: 480px; background: var(--teal); top: -120px; left: -100px; animation: float1 18s ease-in-out infinite; }
-    .orb.b { width: 420px; height: 420px; background: var(--teal-2); bottom: -140px; right: -80px; opacity: .22; animation: float2 22s ease-in-out infinite; }
     .bg-grid {
       position: fixed; inset: 0; z-index: -1; pointer-events: none;
       background-image: linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
                         linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
       background-size: 56px 56px;
-      mask-image: radial-gradient(ellipse 100% 70% at 50% 0%, #000 35%, transparent 80%);
+      mask-image: radial-gradient(ellipse 100% 60% at 50% 0%, #000 30%, transparent 78%);
     }
-    @keyframes float1 { 50% { transform: translate(60px, 40px) scale(1.1); } }
-    @keyframes float2 { 50% { transform: translate(-50px, -30px) scale(1.05); } }
 
     /* ── Scroll progress ── */
     #progress {
       position: fixed; top: 0; left: 0; height: 3px; width: 0%;
-      background: linear-gradient(90deg, var(--teal), var(--teal-2));
+      background: linear-gradient(90deg, var(--teal), var(--teal-2), var(--violet));
       z-index: 200; transition: width .1s linear;
       box-shadow: 0 0 10px var(--teal-glow);
     }
@@ -67,7 +71,7 @@
     /* ── Navbar ── */
     nav {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(7,11,22,0.72);
+      background: rgba(6,9,18,0.72);
       backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--card-brd);
     }
@@ -93,12 +97,14 @@
     .burger { display: none; background: none; border: 0; color: var(--text); font-size: 1.4rem; cursor: pointer; }
 
     /* ── Layout ── */
-    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 1.5rem; }
-    section { padding: 5.5rem 0; }
+    .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 1; }
+    section { padding: 5.5rem 0; position: relative; }
     .eyebrow {
-      display: inline-block; font-size: .78rem; font-weight: 700; letter-spacing: 2px;
+      display: inline-block; font-family: 'JetBrains Mono', monospace;
+      font-size: .76rem; font-weight: 700; letter-spacing: 2px;
       text-transform: uppercase; color: var(--teal); margin-bottom: .6rem;
     }
+    .eyebrow::before { content: "// "; opacity: .5; }
     .sec-head { text-align: center; margin-bottom: 3rem; }
     .sec-title {
       font-family: 'Space Grotesk', sans-serif;
@@ -108,13 +114,16 @@
     .sec-sub { color: var(--text-muted); margin-top: .6rem; font-size: .98rem; }
 
     /* ── Hero ── */
-    #hero { padding: 4rem 0 4.5rem; min-height: calc(100vh - 65px); display: flex; align-items: center; }
+    #hero { padding: 3.5rem 0 4rem; min-height: calc(100vh - 65px); display: flex; align-items: center; position: relative; }
+    #constellation { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+    #hero .wrap { z-index: 2; }
     .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3.5rem; align-items: center; width: 100%; }
     .hero-tag {
       display: inline-flex; align-items: center; gap: .5rem;
       background: var(--teal-dim); color: var(--teal);
       border: 1px solid rgba(0,224,192,0.3); border-radius: 30px;
       padding: .4rem 1rem; font-size: .8rem; font-weight: 600; margin-bottom: 1.6rem;
+      backdrop-filter: blur(6px);
     }
     .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 0 var(--teal-glow); animation: pulse 2s infinite; }
     @keyframes pulse { 70% { box-shadow: 0 0 0 8px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
@@ -124,9 +133,10 @@
       letter-spacing: -2px; line-height: 1.05; margin: 0 0 .9rem; color: #fff;
     }
     .hero-name .grad {
-      background: linear-gradient(120deg, var(--teal), var(--teal-2));
+      background: linear-gradient(120deg, var(--teal), var(--teal-2) 55%, var(--violet));
       -webkit-background-clip: text; background-clip: text; color: transparent;
     }
+    .hero-name .scramble { font-family: 'JetBrains Mono', monospace; }
     .hero-role { font-size: 1.25rem; font-weight: 600; color: var(--text); margin: 0 0 1rem; min-height: 1.6rem; }
     .hero-role .typed { color: var(--teal); }
     .cursor { display: inline-block; width: 2px; background: var(--teal); margin-left: 1px; animation: blink 1s steps(1) infinite; }
@@ -138,31 +148,38 @@
     .btn {
       display: inline-flex; align-items: center; gap: .55rem;
       padding: .8rem 1.5rem; border-radius: 11px; font-weight: 600; font-size: .95rem;
-      transition: all .25s ease; cursor: pointer; border: 1px solid transparent;
+      transition: transform .2s ease, box-shadow .25s ease, border-color .25s, color .25s, background .25s;
+      cursor: pointer; border: 1px solid transparent; will-change: transform;
     }
     .btn-primary { background: linear-gradient(120deg, var(--teal), var(--teal-2)); color: #051014; box-shadow: 0 8px 24px rgba(0,224,192,0.25); }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,224,192,0.4); }
-    .btn-ghost { border-color: var(--card-brd); color: var(--text); background: var(--card-bg); }
-    .btn-ghost:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-3px); }
+    .btn-primary:hover { box-shadow: 0 12px 32px rgba(0,224,192,0.4); }
+    .btn-ghost { border-color: var(--card-brd); color: var(--text); background: rgba(255,255,255,0.03); backdrop-filter: blur(6px); }
+    .btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
 
     .social-links { display: flex; gap: .7rem; }
     .social-btn {
       width: 44px; height: 44px; border-radius: 11px;
-      border: 1px solid var(--card-brd); background: var(--card-bg);
+      border: 1px solid var(--card-brd); background: rgba(255,255,255,0.03);
       display: inline-flex; align-items: center; justify-content: center;
       color: var(--text-muted); font-size: 1.1rem; transition: all .25s ease;
+      backdrop-filter: blur(6px);
     }
     .social-btn:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-dim); transform: translateY(-3px); box-shadow: 0 6px 18px var(--teal-glow); }
     .icon-img { width: 20px; height: 20px; border-radius: 4px; object-fit: cover; }
 
     /* Hero portrait */
     .hero-photo { position: relative; justify-self: center; }
-    .photo-card { position: relative; }
+    .photo-card { position: relative; transform-style: preserve-3d; transition: transform .15s ease-out; }
     .hero-photo .frame {
       width: min(360px, 80vw); aspect-ratio: 744 / 772; border-radius: 24px; overflow: hidden;
       border: 1px solid var(--card-brd);
       box-shadow: 0 30px 70px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,224,192,0.1);
       position: relative;
+    }
+    .hero-photo .frame::before {
+      content: ""; position: absolute; inset: -2px; z-index: -1; border-radius: 26px;
+      background: linear-gradient(140deg, var(--teal), var(--teal-2), var(--violet));
+      opacity: .5; filter: blur(14px);
     }
     .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; filter: grayscale(1) contrast(1.05); transition: filter .5s ease, transform .6s ease; }
     .hero-photo:hover img { filter: grayscale(0) contrast(1); transform: scale(1.03); }
@@ -172,7 +189,7 @@
       pointer-events: none;
     }
     .photo-badge {
-      position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%);
+      position: absolute; bottom: -16px; left: 50%; transform: translateX(-50%) translateZ(40px);
       background: var(--bg-soft); border: 1px solid var(--card-brd); border-radius: 12px;
       padding: .55rem 1rem; display: flex; align-items: center; gap: .5rem;
       font-size: .82rem; font-weight: 600; white-space: nowrap;
@@ -206,8 +223,26 @@
       -webkit-background-clip: text; background-clip: text; color: transparent;
     }
 
+    /* ── Tech marquee ── */
+    .marquee {
+      border-top: 1px solid var(--card-brd); border-bottom: 1px solid var(--card-brd);
+      background: rgba(255,255,255,0.015); overflow: hidden; padding: 1.1rem 0;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    }
+    .marquee-track { display: flex; gap: 3rem; width: max-content; animation: scrollX 32s linear infinite; }
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+    .marquee-item {
+      display: inline-flex; align-items: center; gap: .6rem; white-space: nowrap;
+      font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.05rem;
+      color: var(--text-muted); transition: color .25s;
+    }
+    .marquee-item:hover { color: var(--teal); }
+    .marquee-item i { color: var(--teal); font-size: 1.1rem; }
+    @keyframes scrollX { to { transform: translateX(-50%); } }
+
     /* ── Stats ── */
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1rem; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1rem; max-width: 620px; margin-left: auto; margin-right: auto; }
     .stat {
       background: var(--card-bg); border: 1px solid var(--card-brd); border-radius: 14px;
       padding: 1.3rem 1rem; text-align: center; transition: border-color .25s, transform .25s;
@@ -224,10 +259,11 @@
 
     /* ── Timeline ── */
     .timeline { position: relative; max-width: 800px; margin: 0 auto; padding-left: 2rem; }
-    .timeline::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(var(--teal), transparent); }
+    .timeline::before { content: ""; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: rgba(255,255,255,0.08); }
+    .timeline::after { content: ""; position: absolute; left: 7px; top: 8px; width: 2px; height: var(--tl-progress, 0%); background: linear-gradient(var(--teal), var(--teal-2)); box-shadow: 0 0 10px var(--teal-glow); transition: height .15s linear; }
     .tl-item { position: relative; margin-bottom: 1.8rem; }
-    .tl-item::before { content: ""; position: absolute; left: -1.78rem; top: 7px; width: 12px; height: 12px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 4px rgba(0,224,192,0.12); }
-    .tl-period { font-size: .76rem; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--teal); margin-bottom: .5rem; }
+    .tl-item::before { content: ""; position: absolute; left: -1.78rem; top: 7px; width: 12px; height: 12px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 4px rgba(0,224,192,0.12); z-index: 1; }
+    .tl-period { font-family: 'JetBrains Mono', monospace; font-size: .74rem; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--teal); margin-bottom: .5rem; }
     .tl-card {
       display: block; background: var(--card-bg); border: 1px solid var(--card-brd);
       border-radius: 14px; padding: 1.3rem 1.6rem; transition: all .25s ease;
@@ -244,13 +280,21 @@
     .pj-card {
       display: flex; flex-direction: column; background: var(--card-bg);
       border: 1px solid var(--card-brd); border-radius: 16px; overflow: hidden;
-      transition: all .3s ease; position: relative;
+      transition: border-color .3s ease, box-shadow .3s ease; position: relative;
+      transform-style: preserve-3d; will-change: transform;
     }
-    .pj-card:hover { transform: translateY(-7px); border-color: var(--card-brd-hover); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+    .pj-card::before {
+      content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none; opacity: 0;
+      border-radius: 16px; transition: opacity .3s ease;
+      background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(0,224,192,0.14), transparent 42%);
+    }
+    .pj-card:hover { border-color: var(--card-brd-hover); box-shadow: 0 24px 60px rgba(0,0,0,0.55); }
+    .pj-card:hover::before { opacity: 1; }
     .pj-media { position: relative; height: 190px; overflow: hidden; background: var(--bg-soft); }
     .pj-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
-    .pj-card:hover .pj-media img { transform: scale(1.06); }
-    .pj-body { padding: 1.2rem 1.4rem 1.4rem; flex-grow: 1; display: flex; flex-direction: column; }
+    .pj-card:hover .pj-media img { transform: scale(1.07); }
+    .pj-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, var(--card-bg), transparent 55%); }
+    .pj-body { padding: 1.2rem 1.4rem 1.4rem; flex-grow: 1; display: flex; flex-direction: column; transform: translateZ(40px); }
     .pj-title { font-size: 1.08rem; font-weight: 600; color: #fff; margin: 0 0 .4rem; }
     .pj-desc { font-size: .88rem; color: var(--text-muted); line-height: 1.65; margin: 0 0 1rem; flex-grow: 1; }
     .pj-tags { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
@@ -261,8 +305,8 @@
 
     /* ── Skills ── */
     .skill-cats { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.3rem; max-width: 980px; margin: 0 auto; }
-    .skill-cat { background: var(--card-bg); border: 1px solid var(--card-brd); border-radius: 16px; padding: 1.5rem; transition: border-color .25s; }
-    .skill-cat:hover { border-color: var(--card-brd-hover); }
+    .skill-cat { background: var(--card-bg); border: 1px solid var(--card-brd); border-radius: 16px; padding: 1.5rem; transition: border-color .25s, transform .25s; }
+    .skill-cat:hover { border-color: var(--card-brd-hover); transform: translateY(-4px); }
     .skill-cat-head { display: flex; align-items: center; gap: .7rem; margin-bottom: 1.1rem; }
     .skill-cat-head i { width: 38px; height: 38px; border-radius: 10px; background: var(--teal-dim); color: var(--teal); display: flex; align-items: center; justify-content: center; font-size: 1.05rem; }
     .skill-cat-head h3 { margin: 0; font-size: 1rem; font-weight: 600; color: #fff; }
@@ -290,12 +334,18 @@
 
     /* ── Contact CTA ── */
     .contact-card {
-      max-width: 760px; margin: 0 auto; text-align: center;
-      background: linear-gradient(135deg, rgba(0,224,192,0.08), rgba(25,184,255,0.05));
+      max-width: 760px; margin: 0 auto; text-align: center; position: relative; overflow: hidden;
+      background: linear-gradient(135deg, rgba(0,224,192,0.08), rgba(164,114,255,0.06));
       border: 1px solid rgba(0,224,192,0.2); border-radius: 22px; padding: 3rem 2rem;
     }
-    .contact-card h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.6rem, 4vw, 2.2rem); margin: 0 0 .7rem; color: #fff; }
-    .contact-card p { color: var(--text-muted); margin: 0 0 1.8rem; font-size: 1rem; }
+    .contact-card::before {
+      content: ""; position: absolute; top: -60%; left: -10%; width: 120%; height: 200%;
+      background: radial-gradient(circle, rgba(0,224,192,0.12), transparent 60%);
+      animation: floatGlow 14s ease-in-out infinite; pointer-events: none;
+    }
+    @keyframes floatGlow { 50% { transform: translate(40px, 30px); } }
+    .contact-card h2 { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.6rem, 4vw, 2.2rem); margin: 0 0 .7rem; color: #fff; position: relative; }
+    .contact-card p { color: var(--text-muted); margin: 0 0 1.8rem; font-size: 1rem; position: relative; }
 
     /* ── Footer ── */
     footer { border-top: 1px solid var(--card-brd); padding: 2.5rem 1.5rem; }
@@ -326,12 +376,17 @@
       .burger { display: block; }
       section { padding: 4rem 0; }
     }
+    @media (hover: none) { #cursor-glow { display: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
+      .marquee-track { animation: none; }
+    }
   </style>
 </head>
 
 <body>
   <div id="progress"></div>
-  <div class="bg-orbs"><div class="orb a"></div><div class="orb b"></div></div>
+  <div id="cursor-glow"></div>
   <div class="bg-grid"></div>
 
   <!-- Navbar -->
@@ -353,19 +408,20 @@
 
   <!-- Hero -->
   <section id="hero">
+    <canvas id="constellation"></canvas>
     <div class="wrap">
       <div class="hero-grid">
         <div class="reveal in">
           <span class="hero-tag"><span class="pulse"></span> Available for opportunities</span>
-          <h1 class="hero-name">Hi, I'm <span class="grad">Rohan Vidhate</span></h1>
+          <h1 class="hero-name">Hi, I'm <span class="grad scramble" id="scramble" data-text="Rohan Vidhate">Rohan Vidhate</span></h1>
           <p class="hero-role">I build <span class="typed" id="typed"></span><span class="cursor">&nbsp;</span></p>
           <p class="hero-desc">
             Software Developer crafting <strong>scalable backend systems</strong>, AI integrations, and
             clean APIs. Currently building insurance-tech at <strong>InsureMyTeam</strong> (Y Combinator).
           </p>
           <div class="btn-row">
-            <a class="btn btn-primary" href="#projects"><i class="fas fa-folder-open"></i> View my work</a>
-            <a class="btn btn-ghost" href="mailto:iamrohanvidhate@gmail.com"><i class="fas fa-paper-plane"></i> Get in touch</a>
+            <a class="btn btn-primary magnetic" href="#projects"><i class="fas fa-folder-open"></i> View my work</a>
+            <a class="btn btn-ghost magnetic" href="mailto:iamrohanvidhate@gmail.com"><i class="fas fa-paper-plane"></i> Get in touch</a>
           </div>
           <div class="social-links">
             <a class="social-btn" href="https://www.linkedin.com/in/iamrohanvidhate/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
@@ -378,7 +434,7 @@
         </div>
 
         <div class="hero-photo reveal in">
-          <div class="photo-card">
+          <div class="photo-card" id="photoCard">
             <div class="frame"><img src="asset/rv.jpeg" alt="Rohan Vidhate"></div>
             <div class="photo-badge"><i class="fas fa-code"></i> Code. Create. Conquer.</div>
           </div>
@@ -390,6 +446,23 @@
       </div>
     </div>
   </section>
+
+  <!-- Tech marquee -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marqueeTrack">
+      <span class="marquee-item"><i class="fab fa-java"></i> Java</span>
+      <span class="marquee-item"><i class="fas fa-leaf"></i> Spring Boot</span>
+      <span class="marquee-item"><i class="fab fa-python"></i> Python</span>
+      <span class="marquee-item"><i class="fas fa-database"></i> MySQL</span>
+      <span class="marquee-item"><i class="fas fa-bolt"></i> Redis</span>
+      <span class="marquee-item"><i class="fab fa-node-js"></i> Node.js</span>
+      <span class="marquee-item"><i class="fab fa-vuejs"></i> Vue.js</span>
+      <span class="marquee-item"><i class="fas fa-robot"></i> OpenAI API</span>
+      <span class="marquee-item"><i class="fas fa-brain"></i> RAG</span>
+      <span class="marquee-item"><i class="fab fa-git-alt"></i> Git</span>
+      <span class="marquee-item"><i class="fas fa-diagram-project"></i> REST APIs</span>
+    </div>
+  </div>
 
   <!-- About -->
   <section id="about">
@@ -409,10 +482,9 @@
           machine learning competitions on Kaggle. I love turning hard problems into <span class="hl">simple, elegant solutions</span>.
         </p>
         <div class="stats">
-          <div class="stat"><div class="stat-num">3<span>+</span></div><div class="stat-label">Years experience</div></div>
-          <div class="stat"><div class="stat-num">6<span>+</span></div><div class="stat-label">Projects shipped</div></div>
-          <div class="stat"><div class="stat-num">3<span>+</span></div><div class="stat-label">Certifications</div></div>
-          <div class="stat"><div class="stat-num">2</div><div class="stat-label">Companies</div></div>
+          <div class="stat"><div class="stat-num" data-count="4" data-suffix="+">0</div><div class="stat-label">Years experience</div></div>
+          <div class="stat"><div class="stat-num" data-count="6" data-suffix="+">0</div><div class="stat-label">Projects shipped</div></div>
+          <div class="stat"><div class="stat-num" data-count="3" data-suffix="+">0</div><div class="stat-label">Certifications</div></div>
         </div>
       </div>
     </div>
@@ -425,7 +497,7 @@
         <span class="eyebrow">Career</span>
         <h2 class="sec-title">Experience</h2>
       </div>
-      <div class="timeline">
+      <div class="timeline" id="timeline">
         <div class="tl-item reveal">
           <div class="tl-period">May 2023 – Present</div>
           <a href="https://www.linkedin.com/company/imtcare" target="_blank" class="tl-card">
@@ -465,8 +537,8 @@
       </div>
       <div class="projects-grid">
 
-        <a class="pj-card reveal" href="https://roneya.github.io/Car-Accident-Predictor" target="_blank">
-          <div class="pj-media"><img src="asset/car.png" alt="Car Accident Predictor"></div>
+        <a class="pj-card tilt reveal" href="https://roneya.github.io/Car-Accident-Predictor" target="_blank">
+          <div class="pj-media"><img src="asset/car.png" alt="Car Accident Predictor" loading="lazy"></div>
           <div class="pj-body">
             <h3 class="pj-title">CatBoost Regressor — Kaggle</h3>
             <p class="pj-desc">ML model predicting vehicle accident likelihood with an RMSE of 0.05561 for an Oct '25 Kaggle competition.</p>
@@ -475,8 +547,8 @@
           </div>
         </a>
 
-        <a class="pj-card reveal" href="https://chat-bot-cl87.onrender.com/" target="_blank">
-          <div class="pj-media"><img src="asset/RAG-.jpg" alt="RAG Chat-bot"></div>
+        <a class="pj-card tilt reveal" href="https://chat-bot-cl87.onrender.com/" target="_blank">
+          <div class="pj-media"><img src="asset/RAG-.jpg" alt="RAG Chat-bot" loading="lazy"></div>
           <div class="pj-body">
             <h3 class="pj-title">RAG Chat-bot</h3>
             <p class="pj-desc">Retrieval-Augmented Generation app on a Chroma vector DB powered by the Mistral LLM for context-aware Q&amp;A.</p>
@@ -485,8 +557,8 @@
           </div>
         </a>
 
-        <a class="pj-card reveal" href="https://roneya.github.io/Agent-room/" target="_blank">
-          <div class="pj-media"><img src="asset/preview.png" alt="RV Agent Room"></div>
+        <a class="pj-card tilt reveal" href="https://roneya.github.io/Agent-room/" target="_blank">
+          <div class="pj-media"><img src="asset/preview.png" alt="RV Agent Room" loading="lazy"></div>
           <div class="pj-body">
             <h3 class="pj-title">RV Agent Room</h3>
             <p class="pj-desc">Zero-token pixel-art room visualizing Claude Code agent activity in real-time using Claude Code Hooks and A* pathfinding.</p>
@@ -495,8 +567,8 @@
           </div>
         </a>
 
-        <a class="pj-card reveal" href="https://rv-drive.netlify.app" target="_blank">
-          <div class="pj-media"><img src="asset/drive.png" alt="Google Drive Bucket App"></div>
+        <a class="pj-card tilt reveal" href="https://rv-drive.netlify.app" target="_blank">
+          <div class="pj-media"><img src="asset/drive.png" alt="Google Drive Bucket App" loading="lazy"></div>
           <div class="pj-body">
             <h3 class="pj-title">Google Drive Bucket App</h3>
             <p class="pj-desc">Client-side app integrating Google OAuth 2.0 for file uploads, emulating AWS S3 bucket functionality.</p>
@@ -505,8 +577,8 @@
           </div>
         </a>
 
-        <a class="pj-card reveal" href="https://www.kaggle.com/code/rohanvidhate/loan-status-model-1-beginners" target="_blank">
-          <div class="pj-media"><img src="asset/loan.png" alt="Loan Status Prediction"></div>
+        <a class="pj-card tilt reveal" href="https://www.kaggle.com/code/rohanvidhate/loan-status-model-1-beginners" target="_blank">
+          <div class="pj-media"><img src="asset/loan.png" alt="Loan Status Prediction" loading="lazy"></div>
           <div class="pj-body">
             <h3 class="pj-title">Loan Status Prediction</h3>
             <p class="pj-desc">Classification model with EDA, feature engineering and LightGBM for loan approval prediction.</p>
@@ -515,8 +587,8 @@
           </div>
         </a>
 
-        <a class="pj-card reveal" href="https://roneya.github.io/Guess-the-Country" target="_blank">
-          <div class="pj-media"><img src="asset/country.png" alt="Guess the Country Game"></div>
+        <a class="pj-card tilt reveal" href="https://roneya.github.io/Guess-the-Country" target="_blank">
+          <div class="pj-media"><img src="asset/country.png" alt="Guess the Country Game" loading="lazy"></div>
           <div class="pj-body">
             <h3 class="pj-title">Guess the Country Game</h3>
             <p class="pj-desc">A fun geography quiz browser game with flag recognition, built with vanilla JavaScript.</p>
@@ -616,8 +688,8 @@
         <h2>Let's build something together</h2>
         <p>Open to backend, AI, and full-stack opportunities. My inbox is always open.</p>
         <div class="btn-row" style="justify-content:center;">
-          <a class="btn btn-primary" href="mailto:iamrohanvidhate@gmail.com"><i class="fas fa-envelope"></i> Say hello</a>
-          <a class="btn btn-ghost" href="https://www.linkedin.com/in/iamrohanvidhate/" target="_blank"><i class="fab fa-linkedin-in"></i> Connect on LinkedIn</a>
+          <a class="btn btn-primary magnetic" href="mailto:iamrohanvidhate@gmail.com"><i class="fas fa-envelope"></i> Say hello</a>
+          <a class="btn btn-ghost magnetic" href="https://www.linkedin.com/in/iamrohanvidhate/" target="_blank"><i class="fab fa-linkedin-in"></i> Connect on LinkedIn</a>
         </div>
       </div>
     </div>
@@ -632,18 +704,28 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const canHover = window.matchMedia('(hover: hover)').matches;
+
       // Mobile menu
       const burger = document.getElementById('burger');
       const navLinks = document.getElementById('navLinks');
       burger.addEventListener('click', () => navLinks.classList.toggle('open'));
       navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
-      // Scroll progress
+      // Scroll progress + timeline draw
       const progress = document.getElementById('progress');
+      const timeline = document.getElementById('timeline');
       window.addEventListener('scroll', () => {
         const h = document.documentElement;
         const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
         progress.style.width = scrolled + '%';
+        if (timeline) {
+          const r = timeline.getBoundingClientRect();
+          const vh = window.innerHeight;
+          const pct = Math.max(0, Math.min(1, (vh * 0.65 - r.top) / r.height));
+          timeline.style.setProperty('--tl-progress', (pct * 100) + '%');
+        }
       });
 
       // Reveal on scroll
@@ -672,6 +754,178 @@
         if (deleting && ci === 0) { deleting = false; ri = (ri + 1) % roles.length; }
         setTimeout(type, deleting ? 45 : 90);
       })();
+
+      // Name decode/scramble effect
+      const scrambleEl = document.getElementById('scramble');
+      if (scrambleEl && !reduceMotion) {
+        const finalText = scrambleEl.dataset.text;
+        const glyphs = '!<>-_\\/[]{}—=+*^?#________';
+        let frame = 0;
+        const queue = finalText.split('').map((ch, i) => ({ ch, start: Math.floor(i * 2.4), end: Math.floor(i * 2.4) + 14 + Math.random() * 14, r: null }));
+        (function run() {
+          let out = '', done = 0;
+          queue.forEach(q => {
+            if (frame >= q.end) { out += q.ch; done++; }
+            else if (frame >= q.start) {
+              if (!q.r || Math.random() < 0.32) q.r = glyphs[Math.floor(Math.random() * glyphs.length)];
+              out += q.r;
+            }
+          });
+          scrambleEl.textContent = out;
+          if (done === queue.length) { scrambleEl.textContent = finalText; return; }
+          frame++; requestAnimationFrame(run);
+        })();
+      }
+
+      // Count-up stats
+      const statNums = document.querySelectorAll('.stat-num[data-count]');
+      const statIO = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          const el = e.target, target = +el.dataset.count, suffix = el.dataset.suffix || '';
+          let n = 0; const step = Math.max(1, Math.ceil(target / 28));
+          const tick = () => {
+            n = Math.min(target, n + step);
+            el.innerHTML = n + (suffix ? '<span>' + suffix + '</span>' : '');
+            if (n < target) setTimeout(() => requestAnimationFrame(tick), 28);
+          };
+          tick(); statIO.unobserve(el);
+        });
+      }, { threshold: 0.6 });
+      statNums.forEach(el => statIO.observe(el));
+
+      // Cursor glow
+      const glow = document.getElementById('cursor-glow');
+      if (glow && canHover) {
+        window.addEventListener('mousemove', e => {
+          glow.style.opacity = '1';
+          glow.style.left = e.clientX + 'px';
+          glow.style.top = e.clientY + 'px';
+        });
+        document.addEventListener('mouseleave', () => glow.style.opacity = '0');
+      }
+
+      // Magnetic buttons
+      if (canHover && !reduceMotion) {
+        document.querySelectorAll('.magnetic').forEach(btn => {
+          btn.addEventListener('mousemove', e => {
+            const r = btn.getBoundingClientRect();
+            const x = e.clientX - r.left - r.width / 2;
+            const y = e.clientY - r.top - r.height / 2;
+            btn.style.transform = `translate(${x * 0.25}px, ${y * 0.35}px)`;
+          });
+          btn.addEventListener('mouseleave', () => btn.style.transform = '');
+        });
+      }
+
+      // 3D tilt + spotlight on project cards
+      if (canHover && !reduceMotion) {
+        document.querySelectorAll('.tilt').forEach(card => {
+          card.addEventListener('mousemove', e => {
+            const r = card.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width;
+            const py = (e.clientY - r.top) / r.height;
+            card.style.transform = `perspective(900px) rotateY(${(px - 0.5) * 9}deg) rotateX(${(0.5 - py) * 9}deg) translateY(-6px)`;
+            card.style.setProperty('--mx', px * 100 + '%');
+            card.style.setProperty('--my', py * 100 + '%');
+          });
+          card.addEventListener('mouseleave', () => card.style.transform = '');
+        });
+
+        // Hero photo tilt
+        const photoCard = document.getElementById('photoCard');
+        const heroPhoto = photoCard ? photoCard.closest('.hero-photo') : null;
+        if (heroPhoto) {
+          heroPhoto.addEventListener('mousemove', e => {
+            const r = heroPhoto.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width;
+            const py = (e.clientY - r.top) / r.height;
+            photoCard.style.transform = `perspective(900px) rotateY(${(px - 0.5) * 12}deg) rotateX(${(0.5 - py) * 12}deg)`;
+          });
+          heroPhoto.addEventListener('mouseleave', () => photoCard.style.transform = '');
+        }
+      }
+
+      // Duplicate marquee content for seamless loop
+      const track = document.getElementById('marqueeTrack');
+      if (track) track.innerHTML += track.innerHTML;
+
+      // ── Particle constellation hero ──
+      const canvas = document.getElementById('constellation');
+      if (canvas && !reduceMotion) {
+        const ctx = canvas.getContext('2d');
+        let w, h, dpr, particles = [];
+        const mouse = { x: -9999, y: -9999 };
+        const hero = document.getElementById('hero');
+
+        function resize() {
+          dpr = Math.min(window.devicePixelRatio || 1, 2);
+          w = hero.offsetWidth; h = hero.offsetHeight;
+          canvas.width = w * dpr; canvas.height = h * dpr;
+          canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          const count = Math.min(90, Math.floor(w * h / 16000));
+          particles = Array.from({ length: count }, () => ({
+            x: Math.random() * w, y: Math.random() * h,
+            vx: (Math.random() - 0.5) * 0.35, vy: (Math.random() - 0.5) * 0.35,
+            r: Math.random() * 1.6 + 0.6
+          }));
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        hero.addEventListener('mousemove', e => {
+          const r = hero.getBoundingClientRect();
+          mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+        });
+        hero.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+        const LINK = 130, PULL = 150;
+        function frame() {
+          ctx.clearRect(0, 0, w, h);
+          for (const p of particles) {
+            const dxm = mouse.x - p.x, dym = mouse.y - p.y;
+            const dm = Math.hypot(dxm, dym);
+            if (dm < PULL && dm > 0.1) {
+              p.vx += (dxm / dm) * 0.012;
+              p.vy += (dym / dm) * 0.012;
+            }
+            p.x += p.vx; p.y += p.vy;
+            p.vx *= 0.985; p.vy *= 0.985;
+            if (Math.hypot(p.vx, p.vy) < 0.12) { p.vx += (Math.random() - 0.5) * 0.06; p.vy += (Math.random() - 0.5) * 0.06; }
+            if (p.x < 0 || p.x > w) p.vx *= -1;
+            if (p.y < 0 || p.y > h) p.vy *= -1;
+            p.x = Math.max(0, Math.min(w, p.x));
+            p.y = Math.max(0, Math.min(h, p.y));
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(0,224,192,0.7)';
+            ctx.fill();
+          }
+          for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+              const a = particles[i], b = particles[j];
+              const d = Math.hypot(a.x - b.x, a.y - b.y);
+              if (d < LINK) {
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+                ctx.strokeStyle = `rgba(0,224,192,${(1 - d / LINK) * 0.18})`;
+                ctx.lineWidth = 1; ctx.stroke();
+              }
+            }
+            const a = particles[i];
+            const dm = Math.hypot(a.x - mouse.x, a.y - mouse.y);
+            if (dm < LINK) {
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y);
+              ctx.strokeStyle = `rgba(25,184,255,${(1 - dm / LINK) * 0.4})`;
+              ctx.lineWidth = 1; ctx.stroke();
+            }
+          }
+          requestAnimationFrame(frame);
+        }
+        frame();
+      }
     });
   </script>
 </body>
